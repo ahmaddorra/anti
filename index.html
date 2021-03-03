@@ -8,32 +8,307 @@
     <title>Anti</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <style>
+        :root{
+            --transition-time:10s;
+            --replacement-balloons-transition-time:1s;
+            --big-balloon-width:120px;
+            --big-balloon-height:145px;
+            --small-balloon-width:40px;
+            --small-balloon-height:48px;
+            --xsmall-balloon-width:20px;
+            --xsmall-balloon-height:24px;
+        }
+        html{
+            overflow-x: hidden;
+        }
         body{
+            position: relative;
+            overflow-x: hidden;
             height: 100vh;
             background-image: url("images/background.svg");
             background-size: contain;
             background-repeat: no-repeat;
         }
-        .container-fluid{
-            
+        main{
+            transform-style: preserve-3d;
+            perspective: 400px;
         }
-        #crown{
+        .crown{
+            position: absolute;
+            left: calc(50% - 131px);
+            top: calc(35vh - 102px);
+            z-index: 3;
+            transform: translateZ(0px);
+        }
+        .diamond, .diamondBackground{
+            position: absolute;
+            left: calc(50% - 315px);
+            top: calc(35vh + 102px - 250px);
+            z-index: 2;
+            transform: translateZ(0px);
+        }
+        .diamondBackground{
+            z-index: 1;
+        }
+        
+        .balloon{
             position: absolute;
             display: block;
-            left: calc(50% - 131px);
-            top: calc(35% - 102px);
+            border-radius:80%;
+            box-shadow:inset -10px -10px 0 rgba(0,0,0,0.07);
+            transition: transform var(--transition-time) ease;
+            z-index: 0;
+           /* animation: bounce 10s;*/
+        }
+        .balloon.replacement{
+            transition: transform var(--replacement-balloons-transition-time) ease;
+        }
+        @keyframes bounce{
+            0%{
+                top: 20px;
+            }
+            25%{
+                top: 0px;
+            }
+            50%{
+                top: 20px;
+            }
+            75%{
+                top: 0px;
+            }
+            100%{
+                top: 20px;
+            }
+        }
+        .big {
+            transform: translate3d(0px,0px,-30px);
+            top: calc(35vh + 145px);
+            left: calc(50% - 60px);
+            width: 120px;
+            height: 145px;
+        }
+        .small {
+            transform: translate3d(0px,0px,-10px);
+            top: calc(35vh + 145px);
+            left: calc(50% + 20px);
+            width: 40px;
+            height: 48px;
+        }
+        .xsmall {
+            transform: translate3d(0px,0px,-5px);
+            top: calc(35vh + 145px);
+            left: calc(50% + 40px);
+            width: 20px;
+            height: 24px;
+        }
+        .balloon:before {
+          content:"▲";
+          display:block;
+          text-align:center;
+          width:100%;
+          position:absolute;
+        }
+        
+        .big.balloon:before {
+            bottom:-12px;
+            font-size:20px;
+        }
+        .small.balloon:before{
+            bottom: -4px;
+            font-size:6px;
+        }
+        .xsmall.balloon:before{
+            bottom:-2px;
+            font-size:3px;
+        }
+        .line{
+            position: relative;
+        }
+        .line path{
+            stroke-width: 14;
+            fill: none;
+        }
+        
+        
+        .blue{
+            background:hsl(215,50%,65%);
+        }
+        .blue.balloon:before {
+            color:hsl(215,30%,50%);
+        }
+        .blue path {
+            stroke: hsl(215,50%,65%);;
+        }
+    
+        .red{
+            background:red;
+        }
+        .red.balloon:before {
+            color: red;
+        }
+        .red path{
+            stroke: red;
+        }
+        .darkred{
+            background: #C70039;
+        }
+        .darkred.balloon:before {
+            color: #C70039;
+        }
+        .darkred path{
+            stroke: #C70039;
+        }
+        .darkorange{
+            background: #FF4810;
+        }
+        .darkorange.balloon:before {
+            color: #FF4810;
+        }
+        .darkorange path{
+            stroke: #FF4810;
+        }
+        .redpink{
+            background: #FF1056;
+        }
+        .redpink.balloon:before {
+            color: #FF1056;
+        }
+        .redpink path{
+            stroke: #FF1056;
+        }
+        .gold{
+            background: #FFD700;
+        }
+        .gold.balloon:before {
+            color: #FFD700;
+        }
+        .gold path{
+            stroke: #FFD700;
         }
      /* contain at big  cover at middle contain at small  */
          @media screen and (max-width: 500px){
              body{
                  background-size: contain;
              }
+             .crown{
+                 left: calc(50% - 65.5px);
+                 top: calc(35vh - 51px);
+             }
+             .diamond, .diamondBackground{
+                 left: calc(50% - 157.5px);
+                 top: calc(35vh + 51px - 125px);
+             }
          }
     </style>
 </head>
 <body>
-  <main>
-          <img width="253" height="102" id="crown" src="images/crown.png" alt="" />
+  <main id="main">
+          <img class="d-none d-md-block crown" width="253" height="102" src="images/crown.png" alt="" />
+          <img class="d-block d-md-none crown" width="126" height="51" src="images/crown.png" alt="" />
+          <img class="d-none d-md-block diamond" width="624" height="624" src="images/diamond.svg" alt="" />
+          <img class="d-block d-md-none diamond" width="312" height="312" src="images/diamond.svg" alt="" />
+          <img class="d-none d-md-block diamondBackground" width="624" height="624" src="images/diamond-background.png" alt="" />
+          <img class="d-block d-md-none diamondBackground" width="312" height="312" src="images/diamond-background.png" alt="" />
+          <button id="faster">faster</button>
   </main>
+  <script>
+      var radius = Math.sqrt(Math.pow(window.innerHeight,2)+ Math.pow(window.innerWidth,2)) / 2 + 145;
+      var futureZs = {"big": 40, "small": 16, "xsmall": 8}
+      class Balloon {
+        constructor(id, className) {
+          this.id = id;
+          this.className = className;
+          this.angle = Math.floor(Math.random() * 361);
+          this.futureX = radius * Math.sin(this.angle);
+          this.futureY = radius * Math.cos(this.angle);
+          this.futureZ = futureZs[this.className.split(" ")[0]]
+          var limit = this.className.includes("replacement") ? 1000 : 9200
+          this.delay = Math.floor(Math.random() * limit ) + 1000
+
+          var element = document.createElement("div");
+          element.setAttribute("id", id);
+          element.setAttribute("class", className);
+          
+          var svgLineWidth = getComputedStyle(document.documentElement).getPropertyValue("--"+this.className.split(" ")[0]+"-balloon-width").split("p")[0];
+          var svgLineHeight = getComputedStyle(document.documentElement).getPropertyValue("--"+this.className.split(" ")[0]+"-balloon-height").split("p")[0]*2;
+            
+          element.innerHTML = '<svg class="line" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="'+svgLineWidth+'" height="'+svgLineHeight+'"><path> <animate attributeName="d" values="M250,250 C250,270 250,499 250,500;M250,250 C250,300 500,280 350,500;M250,250 C250,300 0,499 250,500;M250,250 C250,270 350,499 150,350;M250,250 C250,270 250,499 250,500;"keyTimes="0;0.25;0.5;0.75;1"  dur="10s" repeatCount="indefinite"/> </path> </svg>'
+          document.getElementById("main").appendChild(element);
+          this.startMotion(this);
+        }
+        startMotion(balloon){
+            var wait = this.className.includes("replacement") ? 0 : 10000
+            setTimeout(function(){
+                document.getElementById(balloon.id).style.transform = "translate3d("+balloon.futureX+"px,"+balloon.futureY+"px,"+balloon.futureZ+"px)";
+            }, balloon.delay+wait);
+        }
+        update(){
+            this.futureX += 2
+            document.getElementById(this.id).style.transform = "translate3d("+this.futureX+"px,"+this.futureY+"px,"+this.futureZ+"px)";
+        }
+        remove(){
+             var newId = this.angle + this.delay + Math.random()
+             document.getElementById(this.id).id = newId
+             this.id = newId
+             setTimeout(function(){
+                 document.getElementById(newId).remove();
+             }, this.delay);
+        }
+      }
+      
+      var balloonSizes = [{name: "big",number: 10}, {name: "small", number: 20}, {name: "xsmall", number: 30}]
+      var balloonColors = ["red", "blue", "darkred", "darkorange", "redpink", "gold"]
+      var balloons = []
+      
+      for(var index = 0; index < balloonSizes.length; index++){
+          for(var nbOfBalloons = 0; nbOfBalloons < balloonSizes[index].number; nbOfBalloons++){
+              balloons.push(new Balloon(balloonSizes[index].name+balloons.length,balloonSizes[index].name+" "+balloonColors[Math.floor(Math.random()*balloonColors.length)]+" balloon"))
+          }
+      }
+      window.setInterval(createBalloons, 10000);
+  
+      function createBalloons(){
+          var counter = 0;
+          for(var index = 0; index < balloonSizes.length; index++){
+              for(var nbOfBalloons = 0; nbOfBalloons < balloonSizes[index].number; nbOfBalloons++){
+                  balloons[counter].remove()
+                  balloons[counter] = new Balloon(balloonSizes[index].name+counter,balloonSizes[index].name+" "+balloonColors[Math.floor(Math.random()*balloonColors.length)]+" balloon");
+                  counter++;
+              }
+          }
+      }
+  
+  
+      document.getElementById("faster").addEventListener("click", drop)
+      var beatDropReplacementBalloons = []
+      function drop(){
+          document.documentElement.style.setProperty("--transition-time", "1s")
+          for(var index = 0; index < balloons.length; index++ ){
+              balloons[index].update()
+          }
+          createReplacements()
+          setTimeout(function(){
+              document.documentElement.style.setProperty("--transition-time", "10s")
+          }, 1000);
+      }
+      function createReplacements(){
+          if(beatDropReplacementBalloons.length == 0){
+              for(var index = 0; index < balloonSizes.length; index++){
+                  for(var nbOfBalloons = 0; nbOfBalloons < balloonSizes[index].number; nbOfBalloons++){
+                      beatDropReplacementBalloons.push(new Balloon(balloonSizes[index].name+"replacement"+beatDropReplacementBalloons.length,balloonSizes[index].name+" "+balloonColors[Math.floor(Math.random()*balloonColors.length)]+" balloon"))
+                  }
+              }
+          } else {
+              var counter = 0;
+              for(var index = 0; index < balloonSizes.length; index++){
+                  for(var nbOfBalloons = 0; nbOfBalloons < balloonSizes[index].number; nbOfBalloons++){
+                      beatDropReplacementBalloons[counter].remove()
+                      beatDropReplacementBalloons[counter] = new Balloon(balloonSizes[index].name+"replacement"+counter,balloonSizes[index].name+" "+balloonColors[Math.floor(Math.random()*balloonColors.length)]+" balloon replacement");
+                      counter++;
+                  }
+              }
+          }
+      }
+  </script>
 </body>
 </html>

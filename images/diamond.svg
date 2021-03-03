@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   width="624"
+   height="624"
+   viewBox="0 0 1248 1248">
+  <defs>
+	   <style> 
+		   .diamond-path{
+		   		fill:none;
+		   		stroke: url(#g1);
+		   		stroke-width:5px;
+		   		stroke-linecap:butt;
+		   		stroke-linejoin:miter;
+		   		stroke-opacity:1;
+		   }
+		</style>
+		<linearGradient id='g1' gradientUnits='userSpaceOnUse' x1='-7.04%' y1='39.94%' x2='107.04%' y2='60.06%'>
+		<stop stop-color='#3d75ca'/>
+		<stop offset='.071' stop-color='#c03431'/>
+		<stop offset='.143' stop-color='#bf3531'/>
+		<stop offset='.214' stop-color='#c13534'/>
+		<stop offset='.286' stop-color='#bf3332'/>
+		<stop offset='.357' stop-color='#b43397'/>
+		<stop offset='.429' stop-color='#ab38bf'/>
+		<stop offset='.5' stop-color='#9e38bf'/>
+		<stop offset='.571' stop-color='#953bc5'/>
+		<stop offset='.643' stop-color='#8948d2'/>
+		<stop offset='.714' stop-color='#7c51dc'/>
+		<stop offset='.786' stop-color='#6e53df'/>
+		<stop offset='.857' stop-color='#6257e5'/>
+		<stop offset='.929' stop-color='#6b61f0'/>
+		<stop offset='1' stop-color='#4374ce'/>
+		</linearGradient>
+  </defs>
+  <g>
+    <path class="diamond-path"
+       d="M 624.13547,464.09298 724.57802,350.6413 623.53039,290.73882 524.298,350.94384 Z"/>
+    <path class="diamond-path"
+       d="M 624.13547,464.09298 466.51328,464.69805 524.298,350.94384 335.81695,465.00059 466.81582,464.69805 583.67507,833.1491 624.13547,464.09298 664.98428,833.26049 781.41994,464.99045 Z"/>
+    <path class="diamond-path"
+       d="M 781.41994,464.99045 724.57802,350.6413 Z"/>
+    <path class="diamond-path"
+       d="m 724.57802,350.6413 187.79503,113.95067 -130.95311,0.39848"/>
+    <path class="diamond-path"
+       d="m 912.37305,464.59197 119.20455,0.38207 -291.68386,352.40491 z"/>
+    <path class="diamond-path"
+       d="M 664.98428,833.26049 912.37305,464.59197 Z"/>
+    <path class="diamond-path"
+       d="m 912.37305,464.59197 119.20455,0.38207 -180.83921,-174.45303 -227.208,0.21781 -151.73246,-0.21781 -73.39837,0.34139 -182.64247,173.425 120.05986,0.71319 10.69166,-114.39532 52.0829,-59.62678 75.08404,-0.44561 0.6684,0.22281 L 346.45601,350.91203 250.28144,464.80839 448.45648,744.01553 215.8794,464.17045"/>
+    <path class="diamond-path"
+       d="M 448.45648,744.01553 624.39404,960.10721 739.89374,817.37895"/>
+    <path class="diamond-path"
+       d="M 624.39404,960.10721 664.98428,833.26049 Z"/>
+    <path class="diamond-path"
+       d="m 583.67507,833.1491 40.71897,126.95811 z"/>
+    <path class="diamond-path"
+       d="M 335.81695,465.00059 583.67507,833.1491"/>
+    <path class="diamond-path"
+       d="M 912.37305,464.59197 902.55064,350.86249 997.60502,464.55498 801.87199,741.28865"/>
+    <path class="diamond-path"
+       d="m 724.57802,350.6413 51.277,-59.95468 126.69562,60.17587 -51.81225,-60.34148"/>
+    <path class="diamond-path"
+       d="M 474.34395,290.75569 524.298,350.94384"/>
+    <path class="diamond-path"
+       d="M 335.81695,465.00059 507.17928,815.37208"/>
+    <path class="diamond-path"
+       d="m 801.87199,741.28865 -3.03573,4.96359"/>
+    <path class="diamond-path"
+       d="m 507.17928,815.37208 4.01036,5.68178"/>
+  </g>
+</svg>
