@@ -13,6 +13,8 @@
             --replacement-balloons-transition-time:1s;
             --big-balloon-width:120px;
             --big-balloon-height:145px;
+            --medium-balloon-width:60px;
+            --medium-balloon-height:72px;
             --small-balloon-width:40px;
             --small-balloon-height:48px;
             --xsmall-balloon-width:20px;
@@ -28,6 +30,7 @@
             background-image: url("images/background.svg");
             background-size: contain;
             background-repeat: no-repeat;
+            background-position: left top;
         }
         main{
             transform-style: preserve-3d;
@@ -55,51 +58,37 @@
             position: absolute;
             display: block;
             border-radius:80%;
-            box-shadow:inset -10px -10px 0 rgba(0,0,0,0.07);
+            box-shadow:inset -11px -11px 0 rgba(0,0,0,0.08);
             transition: transform var(--transition-time) ease;
             z-index: 0;
-           /* animation: bounce 10s;*/
+            top: calc(35vh + var(--big-balloon-height));
         }
         .balloon.replacement{
             transition: transform var(--replacement-balloons-transition-time) ease;
         }
-        @keyframes bounce{
-            0%{
-                top: 20px;
-            }
-            25%{
-                top: 0px;
-            }
-            50%{
-                top: 20px;
-            }
-            75%{
-                top: 0px;
-            }
-            100%{
-                top: 20px;
-            }
-        }
         .big {
             transform: translate3d(0px,0px,-30px);
-            top: calc(35vh + 145px);
-            left: calc(50% - 60px);
-            width: 120px;
-            height: 145px;
+            left: calc(50% - var(--big-balloon-width)/2);
+            width:var(--big-balloon-width);
+            height:var(--big-balloon-height);
+        }
+        .medium {
+            transform: translate3d(0px,0px,-15px);
+            left: calc(50% - var(--medium-balloon-width)/2);
+            width:var(--medium-balloon-width);
+            height:var(--medium-balloon-height);
         }
         .small {
             transform: translate3d(0px,0px,-10px);
-            top: calc(35vh + 145px);
-            left: calc(50% + 20px);
-            width: 40px;
-            height: 48px;
+            left: calc(50% - var(--small-balloon-width)/2);
+            width:var(--small-balloon-width);
+            height:var(--small-balloon-height);
         }
         .xsmall {
             transform: translate3d(0px,0px,-5px);
-            top: calc(35vh + 145px);
-            left: calc(50% + 40px);
-            width: 20px;
-            height: 24px;
+            left: calc(50% - var(--xsmall-balloon-width)/2);
+            width:var(--xsmall-balloon-width);
+            height:var(--xsmall-balloon-height);
         }
         .balloon:before {
           content:"▲";
@@ -112,6 +101,10 @@
         .big.balloon:before {
             bottom:-12px;
             font-size:20px;
+        }
+        .medium.balloon:before{
+            bottom: -6px;
+            font-size:10px;
         }
         .small.balloon:before{
             bottom: -4px;
@@ -185,10 +178,109 @@
         .gold path{
             stroke: #FFD700;
         }
-     /* contain at big  cover at middle contain at small  */
-         @media screen and (max-width: 500px){
+        .purple{
+            background: #8800FF;
+        }
+        .purple.balloon:before {
+            color: #8800FF;
+        }
+        .purple path{
+            stroke: #8800FF;
+        }
+        .goldenrod{
+            background: #DAA520;
+        }
+        .goldenrod.balloon:before {
+            color: #DAA520;
+        }
+        .goldenrod path{
+            stroke: #DAA520;
+        }
+        
+        .fushia{
+            background: #FF00DD;
+        }
+        .fushia.balloon:before {
+            color: #FF00DD;
+        }
+        .fushia path{
+            stroke: #FF00DD;
+        }
+        
+        .wrap {
+            top: 0;
+            right:0;
+            position: absolute;
+            overflow: hidden;
+            perspective: 800px;
+            transform-style: preserve-3d;
+        }
+        .header,.media_player {
+            width: 300px;
+            padding: 15px;;
+            position: relative;
+            background: transparent;
+        }
+        /* .wrap:hover .header,.wrap:hover .media_player {
+            background: red;
+        }*/
+        .header {
+            cursor: pointer;
+            transition: 0.3s ease all;
+        }
+        .accordion:after {
+            position: absolute;
+            top: 11px;
+            right:10px;
+            content: '\002B';
+            color: black;
+            font-weight: bold;
+            float: right;
+        }
+        .accordion.active:after {
+            content: "\2212";
+        }
+        .media_player {
+            max-height: 0;
+            padding: 0;
+            overflow: hidden;
+            visibility: hidden;
+            transform: rotateX(-180deg);
+            transform-origin: top center;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            transition: 0.3s transform ease;
+        }
+        .media_player:before {
+            content: "";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 15px;
+            right: 15px;
+            height: 1px;
+            background: grey;
+        }
+        .media_player.active {
+            max-height: none;
+            overflow: visible;
+            visibility: visible;
+            transform: rotateX(0deg);
+        }
+        .player_inner {
+            padding: 15px;
+        }
+        
+         @media screen and (max-width: 1275px){
+             body{
+                 background-size: cover;
+                 background-position: right;
+             }
+         }
+         @media screen and (max-width: 575px){
              body{
                  background-size: contain;
+                 background-position: center top;
              }
              .crown{
                  left: calc(50% - 65.5px);
@@ -198,22 +290,99 @@
                  left: calc(50% - 157.5px);
                  top: calc(35vh + 51px - 125px);
              }
+             :root{
+                 --big-balloon-width:60px;
+                 --big-balloon-height:72px;
+                 --medium-balloon-width:30px;
+                 --medium-balloon-height:36px;
+                 --small-balloon-width:20px;
+                 --small-balloon-height:24px;
+                 --xsmall-balloon-width:10px;
+                 --xsmall-balloon-height:12px;
+             }
+             .big.balloon:before {
+                 bottom:-6px;
+                 font-size:10px;
+             }
+             .medium.balloon:before{
+                 bottom: -3px;
+                 font-size:5px;
+             }
+             .small.balloon:before{
+                 bottom: -2px;
+                 font-size:3px;
+             }
+             .xsmall.balloon:before{
+                 bottom:-1px;
+                 font-size:1.5px;
+             }
          }
     </style>
 </head>
 <body>
   <main id="main">
-          <img class="d-none d-md-block crown" width="253" height="102" src="images/crown.png" alt="" />
-          <img class="d-block d-md-none crown" width="126" height="51" src="images/crown.png" alt="" />
-          <img class="d-none d-md-block diamond" width="624" height="624" src="images/diamond.svg" alt="" />
-          <img class="d-block d-md-none diamond" width="312" height="312" src="images/diamond.svg" alt="" />
-          <img class="d-none d-md-block diamondBackground" width="624" height="624" src="images/diamond-background.png" alt="" />
-          <img class="d-block d-md-none diamondBackground" width="312" height="312" src="images/diamond-background.png" alt="" />
-          <button id="faster">faster</button>
+          <img class="d-none d-sm-block crown" width="253" height="102" src="images/crown.png" alt="" />
+          <img class="d-block d-sm-none crown" width="126" height="51" src="images/crown.png" alt="" />
+          <img class="d-none d-sm-block diamond" width="624" height="624" src="images/diamond.svg" alt="" />
+          <img class="d-block d-sm-none diamond" width="312" height="312" src="images/diamond.svg" alt="" />
+          <img class="d-none d-sm-block diamondBackground" width="624" height="624" src="images/diamond-background.png" alt="" />
+          <img class="d-block d-sm-none diamondBackground" width="312" height="312" src="images/diamond-background.png" alt="" />
   </main>
+  <div class="wrap">
+    <div id="header" class="header accordion active">
+        <h6>Anti By Rihanna</h6>
+    </div>
+    <div id="media_player" class="media_player active">
+      <div id="player_inner" class="player_inner">
+          <img width="270" height="270" src="images/anti-album.png"/>
+        <h6>Needed Me</h6>
+        
+      </div>
+    </div>
+  </div>
   <script>
+      var check = true;
+      var audio = new Audio();
+      audio.autoplay = false
+      audio.src = "neededme.mp3"
+      audio.controls = true
+      audio.loop = true
+      audio.crossOrigin = "anonymous";
+      document.getElementById('player_inner').appendChild(audio);
+      
+      var canvas, ctx, source, context, analyser, fbc_array;
+      window.onload = function() {
+              var AudioContext = window.AudioContext // Default
+                  || window.webkitAudioContext // Safari and old versions of Chrome
+                  || false;
+              if (AudioContext) {
+                  context = new AudioContext; // AudioContext object instance
+                  analyser = context.createAnalyser(); // AnalyserNode method
+                  source = context.createMediaElementSource(audio);
+                  source.connect(analyser);
+                  analyser.connect(context.destination);
+                  frameLooper();
+              } else {
+                  alert("Sorry, but the Web Audio API is not supported by your browser. Please, consider upgrading to the latest version or downloading Google Chrome or Mozilla Firefox ");
+              }
+      }
+      function frameLooper(){
+          window.requestAnimationFrame(frameLooper);
+          fbc_array = new Uint8Array(analyser.frequencyBinCount);
+          analyser.getByteFrequencyData(fbc_array);
+          animation_value = fbc_array[0]/2;
+          if(animation_value > 100 && check == true){
+              check = false
+              drop()
+              setTimeout(function(){
+                  check = true
+              }, 1000);
+          }
+      }
+      
+      
       var radius = Math.sqrt(Math.pow(window.innerHeight,2)+ Math.pow(window.innerWidth,2)) / 2 + 145;
-      var futureZs = {"big": 40, "small": 16, "xsmall": 8}
+      var futureZs = {"big": 40,"medium": 20,"small": 16, "xsmall": 8}
       class Balloon {
         constructor(id, className) {
           this.id = id;
@@ -222,8 +391,8 @@
           this.futureX = radius * Math.sin(this.angle);
           this.futureY = radius * Math.cos(this.angle);
           this.futureZ = futureZs[this.className.split(" ")[0]]
-          var limit = this.className.includes("replacement") ? 1000 : 9200
-          this.delay = Math.floor(Math.random() * limit ) + 1000
+          var limit = this.className.includes("replacement") ? 0 : 8200
+          this.delay = Math.floor(Math.random() * limit ) + 1
 
           var element = document.createElement("div");
           element.setAttribute("id", id);
@@ -237,27 +406,28 @@
           this.startMotion(this);
         }
         startMotion(balloon){
-            var wait = this.className.includes("replacement") ? 0 : 10000
             setTimeout(function(){
                 document.getElementById(balloon.id).style.transform = "translate3d("+balloon.futureX+"px,"+balloon.futureY+"px,"+balloon.futureZ+"px)";
-            }, balloon.delay+wait);
+            }, balloon.delay);
         }
         update(){
             this.futureX += 2
             document.getElementById(this.id).style.transform = "translate3d("+this.futureX+"px,"+this.futureY+"px,"+this.futureZ+"px)";
         }
         remove(){
+            var wait = this.className.includes("replacement") ? 1000 : 10000
+            wait = this.className.includes("fixed") ? 0 : wait
              var newId = this.angle + this.delay + Math.random()
              document.getElementById(this.id).id = newId
              this.id = newId
              setTimeout(function(){
                  document.getElementById(newId).remove();
-             }, this.delay);
+             }, this.delay+wait);
         }
       }
       
-      var balloonSizes = [{name: "big",number: 10}, {name: "small", number: 20}, {name: "xsmall", number: 30}]
-      var balloonColors = ["red", "blue", "darkred", "darkorange", "redpink", "gold"]
+      var balloonSizes = [{name: "big",number: 10},{name: "big",number: 7},{name: "small", number: 18}, {name: "xsmall", number: 24}]
+      var balloonColors = ["red", "blue", "darkred", "darkorange", "redpink", "gold", "purple", "goldenrod", "fushia"]
       var balloons = []
       
       for(var index = 0; index < balloonSizes.length; index++){
@@ -265,28 +435,45 @@
               balloons.push(new Balloon(balloonSizes[index].name+balloons.length,balloonSizes[index].name+" "+balloonColors[Math.floor(Math.random()*balloonColors.length)]+" balloon"))
           }
       }
-      window.setInterval(createBalloons, 10000);
+      window.setInterval(createBalloons, 8000);
   
       function createBalloons(){
           var counter = 0;
           for(var index = 0; index < balloonSizes.length; index++){
               for(var nbOfBalloons = 0; nbOfBalloons < balloonSizes[index].number; nbOfBalloons++){
                   balloons[counter].remove()
-                  balloons[counter] = new Balloon(balloonSizes[index].name+counter,balloonSizes[index].name+" "+balloonColors[Math.floor(Math.random()*balloonColors.length)]+" balloon");
+                  balloons[counter] = new Balloon(balloonSizes[index].name+counter,balloonSizes[index].name+" "+balloonColors[Math.floor(Math.random()*balloonColors.length)]+" balloon fixed");
                   counter++;
               }
           }
       }
   
+        var fixedBalloons = []
+        for(var index = 0; index < balloonSizes.length; index++){
+            for(var nbOfBalloons = 0; nbOfBalloons < balloonSizes[index].number; nbOfBalloons++){
+                fixedBalloons.push(new Balloon(balloonSizes[index].name+"fixed"+fixedBalloons.length,balloonSizes[index].name+" "+balloonColors[Math.floor(Math.random()*balloonColors.length)]+" balloon fixed"))
+            }
+        }
+        window.setInterval(createFixedBalloons, 10000);
+
+        function createFixedBalloons(){
+            var counter = 0;
+            for(var index = 0; index < balloonSizes.length; index++){
+                for(var nbOfBalloons = 0; nbOfBalloons < balloonSizes[index].number; nbOfBalloons++){
+                    fixedBalloons[counter].remove()
+                    fixedBalloons[counter] = new Balloon(balloonSizes[index].name+"fixed"+counter,balloonSizes[index].name+" "+balloonColors[Math.floor(Math.random()*balloonColors.length)]+" balloon");
+                    counter++;
+                }
+            }
+        }
   
-      document.getElementById("faster").addEventListener("click", drop)
       var beatDropReplacementBalloons = []
       function drop(){
+          createReplacements()
           document.documentElement.style.setProperty("--transition-time", "1s")
-          for(var index = 0; index < balloons.length; index++ ){
+          for(var index = 0; index < balloons.length/2; index++ ){
               balloons[index].update()
           }
-          createReplacements()
           setTimeout(function(){
               document.documentElement.style.setProperty("--transition-time", "10s")
           }, 1000);
@@ -309,6 +496,10 @@
               }
           }
       }
+    document.getElementById("header").addEventListener("click",function(){
+        document.getElementById("media_player").classList.toggle("active");
+        document.getElementById("header").classList.toggle("active");
+    })
   </script>
 </body>
 </html>
