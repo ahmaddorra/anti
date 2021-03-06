@@ -527,14 +527,14 @@
       function drop(){
           if(beatDropBalloons.length == 0){
               for(var index = 0; index < balloonSizes.length; index++){
-                  for(var nbOfBalloons = 0; nbOfBalloons < balloonSizes[index].number; nbOfBalloons++){
+                  for(var nbOfBalloons = 0; nbOfBalloons < balloonSizes[index].number/2; nbOfBalloons++){
                       beatDropBalloons.push(new Balloon(balloonSizes[index].name+beatDropBalloons.length+"beatdrop",balloonSizes[index].name+" "+balloonColors[Math.floor(Math.random()*balloonColors.length)]+" balloon"))
                   }
               }
           } else{
               var counter = 0;
               for(var index = 0; index < balloonSizes.length; index++){
-                  for(var nbOfBalloons = 0; nbOfBalloons < balloonSizes[index].number; nbOfBalloons++){
+                  for(var nbOfBalloons = 0; nbOfBalloons < balloonSizes[index].number/2; nbOfBalloons++){
                       beatDropBalloons[counter].remove()
                       beatDropBalloons[counter] = new Balloon(balloonSizes[index].name+counter+"beatdrop"+Math.floor(Math.random()*balloonColors.length),balloonSizes[index].name+" "+balloonColors[Math.floor(Math.random()*balloonColors.length)]+" balloon beatdrop");
                       counter++;
