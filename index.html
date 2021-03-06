@@ -19,6 +19,7 @@
             --small-balloon-height:48px;
             --xsmall-balloon-width:20px;
             --xsmall-balloon-height:24px;
+            --crown-shadow: 1px -8px 20px 10px gold;
         }
         html{
             overflow-x: hidden;
@@ -43,6 +44,18 @@
             z-index: 3;
             transform: translateZ(0px);
         }
+        .crown-shadow{
+            transition: all 0.1s ease;
+            box-shadow:var(--crown-shadow);
+            width: 183px;
+            height: 40px;
+            position: absolute;
+            left: calc(50% - 95.5px);
+            top: calc(35vh - 50px);
+            z-index: 0;
+            transform: translateZ(0px);
+            background: green;
+        }
         .diamond, .diamondBackground{
             position: absolute;
             left: calc(50% - 315px);
@@ -62,6 +75,9 @@
             transition: transform var(--transition-time) ease;
             z-index: 0;
             top: calc(35vh + var(--big-balloon-height));
+        }
+        .beatdrop{
+            transition: transform 1s ease;
         }
         .balloon.replacement{
             transition: transform var(--replacement-balloons-transition-time) ease;
@@ -323,6 +339,7 @@
   <main id="main">
           <img class="d-none d-sm-block crown" width="253" height="102" src="images/crown.png" alt="" />
           <img class="d-block d-sm-none crown" width="126" height="51" src="images/crown.png" alt="" />
+          <div class="crown-shadow"></div>
           <img class="d-none d-sm-block diamond" width="624" height="624" src="images/diamond.svg" alt="" />
           <img class="d-block d-sm-none diamond" width="312" height="312" src="images/diamond.svg" alt="" />
           <img class="d-none d-sm-block diamondBackground" width="624" height="624" src="images/diamond-background.png" alt="" />
@@ -340,18 +357,43 @@
       </div>
     </div>
   </div>
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Starboy Web Animation</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          This webpage uses the web audio api to control the audio and create the audio visualizations.
+          Make sure this website is allowed to play media (check preferences).
+          Play the song and wait for the beat drop, Watch til the end :)
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
   <script>
+      
       var check = true;
       var audio = new Audio();
-      audio.autoplay = false
-      audio.src = "neededme.mp3"
-      audio.controls = true
-      audio.loop = true
-      audio.crossOrigin = "anonymous";
-      document.getElementById('player_inner').appendChild(audio);
-      
       var canvas, ctx, source, context, analyser, fbc_array;
       window.onload = function() {
+          var myModal = new bootstrap.Modal(document.getElementById('staticBackdrop'), {
+            keyboard: false
+          })
+          myModal.toggle()
+          document.getElementById('staticBackdrop').addEventListener('hidden.bs.modal', function () {
+              audio.autoplay = false
+              audio.src = "neededme.mp3"
+              audio.controls = true
+              audio.loop = true
+              audio.crossOrigin = "anonymous";
+              document.getElementById('player_inner').appendChild(audio);
               var AudioContext = window.AudioContext // Default
                   || window.webkitAudioContext // Safari and old versions of Chrome
                   || false;
@@ -365,12 +407,16 @@
               } else {
                   alert("Sorry, but the Web Audio API is not supported by your browser. Please, consider upgrading to the latest version or downloading Google Chrome or Mozilla Firefox ");
               }
+          });
       }
       function frameLooper(){
           window.requestAnimationFrame(frameLooper);
           fbc_array = new Uint8Array(analyser.frequencyBinCount);
           analyser.getByteFrequencyData(fbc_array);
           animation_value = fbc_array[0]/2;
+          var diff = animation_value- 100;
+          var difb = diff/27 ;
+          document.documentElement.style.setProperty("--crown-shadow", "1px -8px "+Math.floor(difb*(120-20)+20)+"px "+Math.floor(difb*(20-10)+10)+"px gold")
           if(animation_value > 100 && check == true){
               check = false
               drop()
@@ -391,8 +437,8 @@
           this.futureX = radius * Math.sin(this.angle);
           this.futureY = radius * Math.cos(this.angle);
           this.futureZ = futureZs[this.className.split(" ")[0]]
-          var limit = this.className.includes("replacement") ? 0 : 8200
-          this.delay = Math.floor(Math.random() * limit ) + 1
+          var limit = this.className.includes("beatdrop") ? 20 : 8000
+          this.delay = Math.floor(Math.random() * limit ) + 0
 
           var element = document.createElement("div");
           element.setAttribute("id", id);
@@ -407,26 +453,29 @@
         }
         startMotion(balloon){
             setTimeout(function(){
+                if(balloon.className.includes("beatdrop")){
+                    var rand = Math.floor(Math.random() * 4 ) + 1
+                    balloon.delay += rand*1000
+                    document.getElementById(balloon.id).style.transition = "transform "+rand+"s ease";
+                }
                 document.getElementById(balloon.id).style.transform = "translate3d("+balloon.futureX+"px,"+balloon.futureY+"px,"+balloon.futureZ+"px)";
             }, balloon.delay);
         }
         update(){
-            this.futureX += 2
+            this.futureX += 1
             document.getElementById(this.id).style.transform = "translate3d("+this.futureX+"px,"+this.futureY+"px,"+this.futureZ+"px)";
         }
         remove(){
-            var wait = this.className.includes("replacement") ? 1000 : 10000
-            wait = this.className.includes("fixed") ? 0 : wait
-             var newId = this.angle + this.delay + Math.random()
+             var newId = this.angle + this.delay + Math.random() + this.className.includes("beatdrop") ? "beatdrop" : ""
              document.getElementById(this.id).id = newId
              this.id = newId
              setTimeout(function(){
                  document.getElementById(newId).remove();
-             }, this.delay+wait);
+             }, this.delay + 1000);
         }
       }
       
-      var balloonSizes = [{name: "big",number: 10},{name: "big",number: 7},{name: "small", number: 18}, {name: "xsmall", number: 24}]
+      var balloonSizes = [{name: "big",number: 6},{name: "medium",number: 5},{name: "small", number: 8}, {name: "xsmall", number: 11}]
       var balloonColors = ["red", "blue", "darkred", "darkorange", "redpink", "gold", "purple", "goldenrod", "fushia"]
       var balloons = []
       
@@ -435,67 +484,40 @@
               balloons.push(new Balloon(balloonSizes[index].name+balloons.length,balloonSizes[index].name+" "+balloonColors[Math.floor(Math.random()*balloonColors.length)]+" balloon"))
           }
       }
-      window.setInterval(createBalloons, 8000);
+      window.setInterval(createBalloons, 12000);
   
       function createBalloons(){
           var counter = 0;
           for(var index = 0; index < balloonSizes.length; index++){
               for(var nbOfBalloons = 0; nbOfBalloons < balloonSizes[index].number; nbOfBalloons++){
                   balloons[counter].remove()
-                  balloons[counter] = new Balloon(balloonSizes[index].name+counter,balloonSizes[index].name+" "+balloonColors[Math.floor(Math.random()*balloonColors.length)]+" balloon fixed");
+                  balloons[counter] = new Balloon(balloonSizes[index].name+counter+Math.floor(Math.random()*balloonColors.length),balloonSizes[index].name+" "+balloonColors[Math.floor(Math.random()*balloonColors.length)]+" balloon");
                   counter++;
               }
           }
       }
   
-        var fixedBalloons = []
-        for(var index = 0; index < balloonSizes.length; index++){
-            for(var nbOfBalloons = 0; nbOfBalloons < balloonSizes[index].number; nbOfBalloons++){
-                fixedBalloons.push(new Balloon(balloonSizes[index].name+"fixed"+fixedBalloons.length,balloonSizes[index].name+" "+balloonColors[Math.floor(Math.random()*balloonColors.length)]+" balloon fixed"))
-            }
-        }
-        window.setInterval(createFixedBalloons, 10000);
-
-        function createFixedBalloons(){
-            var counter = 0;
-            for(var index = 0; index < balloonSizes.length; index++){
-                for(var nbOfBalloons = 0; nbOfBalloons < balloonSizes[index].number; nbOfBalloons++){
-                    fixedBalloons[counter].remove()
-                    fixedBalloons[counter] = new Balloon(balloonSizes[index].name+"fixed"+counter,balloonSizes[index].name+" "+balloonColors[Math.floor(Math.random()*balloonColors.length)]+" balloon");
-                    counter++;
-                }
-            }
-        }
-  
-      var beatDropReplacementBalloons = []
+      var beatDropBalloons = []
       function drop(){
-          createReplacements()
-          document.documentElement.style.setProperty("--transition-time", "1s")
-          for(var index = 0; index < balloons.length/2; index++ ){
-              balloons[index].update()
-          }
-          setTimeout(function(){
-              document.documentElement.style.setProperty("--transition-time", "10s")
-          }, 1000);
-      }
-      function createReplacements(){
-          if(beatDropReplacementBalloons.length == 0){
+          if(beatDropBalloons.length == 0){
               for(var index = 0; index < balloonSizes.length; index++){
                   for(var nbOfBalloons = 0; nbOfBalloons < balloonSizes[index].number; nbOfBalloons++){
-                      beatDropReplacementBalloons.push(new Balloon(balloonSizes[index].name+"replacement"+beatDropReplacementBalloons.length,balloonSizes[index].name+" "+balloonColors[Math.floor(Math.random()*balloonColors.length)]+" balloon"))
+                      beatDropBalloons.push(new Balloon(balloonSizes[index].name+beatDropBalloons.length+"beatdrop",balloonSizes[index].name+" "+balloonColors[Math.floor(Math.random()*balloonColors.length)]+" balloon"))
                   }
               }
-          } else {
+          } else{
               var counter = 0;
               for(var index = 0; index < balloonSizes.length; index++){
                   for(var nbOfBalloons = 0; nbOfBalloons < balloonSizes[index].number; nbOfBalloons++){
-                      beatDropReplacementBalloons[counter].remove()
-                      beatDropReplacementBalloons[counter] = new Balloon(balloonSizes[index].name+"replacement"+counter,balloonSizes[index].name+" "+balloonColors[Math.floor(Math.random()*balloonColors.length)]+" balloon replacement");
+                      beatDropBalloons[counter].remove()
+                      beatDropBalloons[counter] = new Balloon(balloonSizes[index].name+counter+"beatdrop"+Math.floor(Math.random()*balloonColors.length),balloonSizes[index].name+" "+balloonColors[Math.floor(Math.random()*balloonColors.length)]+" balloon beatdrop");
                       counter++;
                   }
               }
           }
+          
       }
+      
     document.getElementById("header").addEventListener("click",function(){
         document.getElementById("media_player").classList.toggle("active");
         document.getElementById("header").classList.toggle("active");
